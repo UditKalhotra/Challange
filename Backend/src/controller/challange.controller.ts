@@ -1,6 +1,7 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth.middleware.js";
-import { createChallange } from "../services/challange.service.js";
+import { createChallange, getChallenges } from "../services/challange.service.js";
+
 
 export const createChallangeController = async(
     req:AuthRequest,
@@ -20,6 +21,22 @@ export const createChallangeController = async(
         
         res.status(400).json({
             message:(error as Error).message
+        });
+    }
+};
+
+
+export const getChallengesController = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const challenges = await getChallenges();
+
+        res.status(200).json(challenges);
+    } catch (error) {
+        res.status(500).json({
+            message: (error as Error).message
         });
     }
 };
