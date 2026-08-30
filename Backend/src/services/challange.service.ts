@@ -26,3 +26,13 @@ export const createChallange = async (
 
     return challange;
 }
+
+export const getChallenges = async () => {
+    const challenges = await prisma.challenge.findMany({
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+
+    return challenges;
+};
