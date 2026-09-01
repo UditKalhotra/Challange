@@ -5,6 +5,8 @@ import { createChallangeController,getChallengesController } from "../controller
 const router = Router();
 
 router.post("/",protect,createChallangeController);
+router.get("/",protect,getChallengesController);
+
 
 export default router;
 

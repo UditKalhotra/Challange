@@ -1,4 +1,4 @@
-import type { Response } from "express";
+import type { Request,Response } from "express";
 import type { AuthRequest } from "../middleware/auth.middleware.js";
 import { createChallange, getChallenges } from "../services/challange.service.js";
 
