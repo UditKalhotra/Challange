@@ -69,7 +69,7 @@ export const removeChallenge = async (req: AuthRequest, res: Response) => {
         });
     } catch (error) {
         res.status(404).json({
-            message: "Challenge not found"
+            message: "Challenge not found please try again"
         });
     }
 };
