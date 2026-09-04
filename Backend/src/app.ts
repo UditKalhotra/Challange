@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoute from "./routes/auth.route.js";
 import { protect } from "./middleware/auth.middleware.js";
 import challengeRoute from "./routes/challange.route.js";
+import participationRoute from "./routes/participation.route.js";
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/api/auth",authRoute);
 app.use("/api/challenges",challengeRoute);
+app.use("/part",participationRoute);
 
 app.get("/api/test",protect,(req, res) => {
     res.json({
