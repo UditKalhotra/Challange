@@ -7,3 +7,4 @@ const router = Router();
 router.post("/challenge/:id/join", protect, joinChallengeController);
 
 export default router;
+//this is the router file for 
