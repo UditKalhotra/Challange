@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/api/auth",authRoute);
 app.use("/api/challenges",challengeRoute);
 app.use("/part",participationRoute);
-app.use("/api", submissionRoutes);
+app.use("/", submissionRoutes);
 
 app.get("/api/test",protect,(req, res) => {
     res.json({
