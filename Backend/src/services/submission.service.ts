@@ -1,4 +1,8 @@
 import prisma from "../config/prisma.js";
+import type { SubmissionStatus } from "../generated/prisma/client.js";
+
+
+
 export const submitChallenge = async (
     userId: string,
     challengeId: string,
@@ -89,5 +93,47 @@ export const getChallengeSubmission = async(
     });
 
     return submission;
+}
+
+
+export const reviewSubmission = async(
+    reviewId: string,
+    submissionId: string,
+    status: SubmissionStatus
+) => {
+
+    const submission = await prisma.submission.findUnique({
+        where: {
+            id: submissionId
+        },
+        include: {
+            challenge:{
+                select: {
+                    creatorId: true
+                }
+            }
+        }
+    });
+
+    if(!submission){
+        throw new Error("Submission not found :");
+    }
+
+    if(submission.challenge.creatorId !== reviewId){
+        throw new Error("only the challenge reviewer can review submission");
+    }
+
+    if(submission.status !== "PENDING"){
+        throw new Error("Submission has already been reviewed ");
+    }
+
+    return prisma.submission.update({
+        where:{
+            id: submissionId
+        },
+        data: {
+            status
+        }
+    })
 
 }

@@ -1,6 +1,6 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth.middleware.js";
-import { submitChallenge, getChallengeSubmission } from "../services/submission.service.js";
+import { submitChallenge, getChallengeSubmission, reviewSubmission } from "../services/submission.service.js";
 
 export const submitChallengeController = async (
     req: AuthRequest,
@@ -63,6 +63,38 @@ export const getChallengeSubmissionController = async(
             message: error
         })
     }
+}
+
+export const reviewSubmissionController = async(
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        const reviewId = req.userId!;
+        const submissionId = String(req.params.id);
+        const { status } = req.body;
+
+        if(status !== "APPROVED" && status !== "REJECTED"){
+            return res.status(400).json({
+                message: "Status must be approved or Rejected: "
+            });
+        }
+
+        const submission = await reviewSubmission(
+            reviewId,
+            submissionId,
+            status
+        );
+
+        return res.status(200).json({
+            message: "Submission reviewed successfully",
+            submission
+        });
 
 
+    } catch (error) {
+        return res.status(500).json({ error });
+
+    }
 }
