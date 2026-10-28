@@ -46,3 +46,48 @@ export const submitChallenge = async (
 
     return submission;
 };
+
+export const getChallengeSubmission = async(
+    userId: string,
+    challengeId: string
+) => {
+
+    const challenge = await prisma.challenge.findUnique({
+        where: {
+            id: challengeId
+        },
+
+        select: {
+            id: true,
+            creatorId: true
+        }
+    });
+
+    if(!challenge){
+        throw new Error("challenge not found");
+    }
+
+    if(challenge.creatorId !== userId){
+        throw new Error("Only the challenge creatoe can view submission :");
+    }
+
+    const submission = await prisma.submission.findMany({
+        where: {
+            challengeId
+        },
+        include: {
+            user : {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
+        },
+        orderBy: {
+            submittedAt: "desc"
+        }
+    });
+
+    return submission;
+
+}

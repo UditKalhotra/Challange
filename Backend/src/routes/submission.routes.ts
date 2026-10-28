@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { submitChallengeController } from "../controller/submission.controller.js";
+import { submitChallengeController, getChallengeSubmissionController } from "../controller/submission.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 
 const router = Router();
@@ -9,5 +9,11 @@ router.post(
     protect,
     submitChallengeController
 );
+
+router.get(
+    "/challenges/:id/submission",
+    protect,
+    getChallengeSubmissionController
+)
 
 export default router;
